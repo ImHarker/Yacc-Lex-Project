@@ -1,0 +1,433 @@
+Terminals unused in grammar
+
+    Slash
+    Dot
+
+
+Grammar
+
+    0 $accept: file $end
+
+    1 file: symposium RBLeft classes RBRight RBLeft list RBRight
+
+    2 symposium: String DDot Int
+
+    3 classes: String
+    4        | classes Comma String
+
+    5 list: medicamento
+    6     | list medicamento
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    8 fabricantes: String
+    9            | fabricantes Comma String
+
+   10 marcasequi: String Hyphen String
+   11           | marcasequi Comma String Hyphen String
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    RBLeft <str> (258) 1
+    RBRight <str> (259) 1
+    BLeft <str> (260) 7
+    BRight <str> (261) 7
+    Semicolon <str> (262) 7
+    Slash <str> (263)
+    Hyphen <str> (264) 10 11
+    CBLeft <str> (265) 7
+    CBRight <str> (266) 7
+    Comma <str> (267) 4 7 9 11
+    Dot <str> (268)
+    DDot <str> (269) 2
+    String <str> (270) 2 3 4 7 8 9 10 11
+    Int <num> (271) 2 7
+    Float <fnum> (272) 7
+
+
+Nonterminals, with rules where they appear
+
+    $accept (18)
+        on left: 0
+    file (19)
+        on left: 1
+        on right: 0
+    symposium (20)
+        on left: 2
+        on right: 1
+    classes (21)
+        on left: 3 4
+        on right: 1 4
+    list <str> (22)
+        on left: 5 6
+        on right: 1 6
+    medicamento <str> (23)
+        on left: 7
+        on right: 5 6
+    fabricantes (24)
+        on left: 8 9
+        on right: 7 9
+    marcasequi (25)
+        on left: 10 11
+        on right: 7 11
+
+
+State 0
+
+    0 $accept: . file $end
+
+    String  shift, and go to state 1
+
+    file       go to state 2
+    symposium  go to state 3
+
+
+State 1
+
+    2 symposium: String . DDot Int
+
+    DDot  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: file . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 file: symposium . RBLeft classes RBRight RBLeft list RBRight
+
+    RBLeft  shift, and go to state 6
+
+
+State 4
+
+    2 symposium: String DDot . Int
+
+    Int  shift, and go to state 7
+
+
+State 5
+
+    0 $accept: file $end .
+
+    $default  accept
+
+
+State 6
+
+    1 file: symposium RBLeft . classes RBRight RBLeft list RBRight
+
+    String  shift, and go to state 8
+
+    classes  go to state 9
+
+
+State 7
+
+    2 symposium: String DDot Int .
+
+    $default  reduce using rule 2 (symposium)
+
+
+State 8
+
+    3 classes: String .
+
+    $default  reduce using rule 3 (classes)
+
+
+State 9
+
+    1 file: symposium RBLeft classes . RBRight RBLeft list RBRight
+    4 classes: classes . Comma String
+
+    RBRight  shift, and go to state 10
+    Comma    shift, and go to state 11
+
+
+State 10
+
+    1 file: symposium RBLeft classes RBRight . RBLeft list RBRight
+
+    RBLeft  shift, and go to state 12
+
+
+State 11
+
+    4 classes: classes Comma . String
+
+    String  shift, and go to state 13
+
+
+State 12
+
+    1 file: symposium RBLeft classes RBRight RBLeft . list RBRight
+
+    BLeft  shift, and go to state 14
+
+    list         go to state 15
+    medicamento  go to state 16
+
+
+State 13
+
+    4 classes: classes Comma String .
+
+    $default  reduce using rule 4 (classes)
+
+
+State 14
+
+    7 medicamento: BLeft . String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    String  shift, and go to state 17
+
+
+State 15
+
+    1 file: symposium RBLeft classes RBRight RBLeft list . RBRight
+    6 list: list . medicamento
+
+    RBRight  shift, and go to state 18
+    BLeft    shift, and go to state 14
+
+    medicamento  go to state 19
+
+
+State 16
+
+    5 list: medicamento .
+
+    $default  reduce using rule 5 (list)
+
+
+State 17
+
+    7 medicamento: BLeft String . Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 20
+
+
+State 18
+
+    1 file: symposium RBLeft classes RBRight RBLeft list RBRight .
+
+    $default  reduce using rule 1 (file)
+
+
+State 19
+
+    6 list: list medicamento .
+
+    $default  reduce using rule 6 (list)
+
+
+State 20
+
+    7 medicamento: BLeft String Comma . Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Int  shift, and go to state 21
+
+
+State 21
+
+    7 medicamento: BLeft String Comma Int . Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 22
+
+
+State 22
+
+    7 medicamento: BLeft String Comma Int Comma . String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    String  shift, and go to state 23
+
+
+State 23
+
+    7 medicamento: BLeft String Comma Int Comma String . Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 24
+
+
+State 24
+
+    7 medicamento: BLeft String Comma Int Comma String Comma . String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    String  shift, and go to state 25
+
+
+State 25
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String . Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 26
+
+
+State 26
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma . Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Float  shift, and go to state 27
+
+
+State 27
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float . Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 28
+
+
+State 28
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma . CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    CBLeft  shift, and go to state 29
+
+
+State 29
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft . fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    String  shift, and go to state 30
+
+    fabricantes  go to state 31
+
+
+State 30
+
+    8 fabricantes: String .
+
+    $default  reduce using rule 8 (fabricantes)
+
+
+State 31
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes . CBRight Comma CBLeft marcasequi CBRight BRight Semicolon
+    9 fabricantes: fabricantes . Comma String
+
+    CBRight  shift, and go to state 32
+    Comma    shift, and go to state 33
+
+
+State 32
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight . Comma CBLeft marcasequi CBRight BRight Semicolon
+
+    Comma  shift, and go to state 34
+
+
+State 33
+
+    9 fabricantes: fabricantes Comma . String
+
+    String  shift, and go to state 35
+
+
+State 34
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma . CBLeft marcasequi CBRight BRight Semicolon
+
+    CBLeft  shift, and go to state 36
+
+
+State 35
+
+    9 fabricantes: fabricantes Comma String .
+
+    $default  reduce using rule 9 (fabricantes)
+
+
+State 36
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft . marcasequi CBRight BRight Semicolon
+
+    String  shift, and go to state 37
+
+    marcasequi  go to state 38
+
+
+State 37
+
+   10 marcasequi: String . Hyphen String
+
+    Hyphen  shift, and go to state 39
+
+
+State 38
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi . CBRight BRight Semicolon
+   11 marcasequi: marcasequi . Comma String Hyphen String
+
+    CBRight  shift, and go to state 40
+    Comma    shift, and go to state 41
+
+
+State 39
+
+   10 marcasequi: String Hyphen . String
+
+    String  shift, and go to state 42
+
+
+State 40
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight . BRight Semicolon
+
+    BRight  shift, and go to state 43
+
+
+State 41
+
+   11 marcasequi: marcasequi Comma . String Hyphen String
+
+    String  shift, and go to state 44
+
+
+State 42
+
+   10 marcasequi: String Hyphen String .
+
+    $default  reduce using rule 10 (marcasequi)
+
+
+State 43
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight . Semicolon
+
+    Semicolon  shift, and go to state 45
+
+
+State 44
+
+   11 marcasequi: marcasequi Comma String . Hyphen String
+
+    Hyphen  shift, and go to state 46
+
+
+State 45
+
+    7 medicamento: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon .
+
+    $default  reduce using rule 7 (medicamento)
+
+
+State 46
+
+   11 marcasequi: marcasequi Comma String Hyphen . String
+
+    String  shift, and go to state 47
+
+
+State 47
+
+   11 marcasequi: marcasequi Comma String Hyphen String .
+
+    $default  reduce using rule 11 (marcasequi)
