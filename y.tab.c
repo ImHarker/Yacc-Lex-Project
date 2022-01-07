@@ -68,15 +68,25 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
-void yyerror (char *s);
-int yylex();
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+void arrayAlloc();
+void yyerror (char *s);
+void newMed();
+int yylex();
 char aux[100];
-int nClasses;
+int nClasses = 0;
+int *nMedsClasse = NULL; 
+typedef struct medi{
+	char nome[25], cat[25], comp[20], fabr[50], equ[50];
+	int cod;
+	float preco;
+} medicamento;
 
-#line 80 "y.tab.c"
+medicamento **array = NULL;
+
+#line 90 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -162,10 +172,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 11 "parser.y"
+#line 22 "parser.y"
 float fnum; int num; char *str;
 
-#line 169 "y.tab.c"
+#line 179 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -542,8 +552,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    24,    24,    26,    28,    29,    31,    32,    35,    37,
-      38,    40,    41
+       0,    35,    35,    37,    39,    40,    42,    43,    46,    48,
+      49,    51,    52
 };
 #endif
 
@@ -1353,37 +1363,37 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 28 "parser.y"
-                                                        {nClasses++;}
-#line 1359 "y.tab.c"
+#line 39 "parser.y"
+                                                        {nClasses++; arrayAlloc();}
+#line 1369 "y.tab.c"
     break;
 
   case 5:
-#line 29 "parser.y"
-                                                {nClasses++;}
-#line 1365 "y.tab.c"
+#line 40 "parser.y"
+                                                {nClasses++; arrayAlloc();}
+#line 1375 "y.tab.c"
     break;
 
   case 6:
-#line 31 "parser.y"
+#line 42 "parser.y"
                   {printf("%s\n",(yyval.str));}
-#line 1371 "y.tab.c"
+#line 1381 "y.tab.c"
     break;
 
   case 7:
-#line 32 "parser.y"
+#line 43 "parser.y"
                            {printf("%s\n", (yyvsp[0].str));}
-#line 1377 "y.tab.c"
+#line 1387 "y.tab.c"
     break;
 
   case 8:
-#line 35 "parser.y"
-                                                                                                                                                                 {strcat((yyval.str), " "); strcat((yyval.str), (yyvsp[-18].str)); strcat((yyval.str), " "); strcat((yyval.str), (yyvsp[-17].str));}
-#line 1383 "y.tab.c"
+#line 46 "parser.y"
+                                                                                                                                                                 {newMed();}
+#line 1393 "y.tab.c"
     break;
 
 
-#line 1387 "y.tab.c"
+#line 1397 "y.tab.c"
 
       default: break;
     }
@@ -1615,32 +1625,65 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 43 "parser.y"
+#line 54 "parser.y"
                      /* C code */
 
 int main (void) {
 	/* init symbol table */
-	int out;				
+	int out;
+	int i;
 	//extern int yydebug;
    	//yydebug = 1;
-	typedef struct medi{
-		char nome[25], cat[25], comp[20], fabr[50], equ[50];
-		int cod;
-		float preco;
-	} medicamento;
-
 	if(out = yyparse( )){
+		for(i = 0; i< nClasses; i++){
+			free(array[i]);
+		}
+		free(array);
+		free(nMedsClasse);
 		return out;
 	}else {
-		medicamento *array = malloc(nClasses * sizeof(medicamento)); 
-	
-		printf("%d\n", nClasses);
-
-		
+		printf("%s\n", array[0][0].cat);
+		printf("%s\n", array[1][0].cat);
+		for(i = 0; i< nClasses; i++){
+			free(array[i]);
+		}
 		free(array);
+		free(nMedsClasse);
+		return out;
 	}
 }
 
+void arrayAlloc(){
+		int i;
+		array = (medicamento**)realloc(array, nClasses * sizeof(medicamento*)); 
+		nMedsClasse = (int*)realloc(nMedsClasse, nClasses * sizeof(int));
+		for(i=0; i<nClasses;i++){
+			nMedsClasse[i] = 0;
+		}
+
+		if(!array || !nMedsClasse){ printf("Não foi possivel alocar a memoria"); exit(1);}
+
+		printf("%d Classes alocadas!\n", nClasses);
+
+}
+void newMed(){
+	int i;
+	for(i=0; i<nClasses; i++){
+		if(nMedsClasse[i] != 0){
+			if(strcmp(array[i][0].cat, "NOTPlaceholder")== 0){
+				++nMedsClasse[i];
+				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
+				strcpy(array[i][nMedsClasse[i]-1].cat, "Placeholder");		
+				break;
+			}
+		}else { 
+			++nMedsClasse[i];
+			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
+			strcpy(array[i][0].cat, "Placeholder");
+			break;
+		}
+	}
+}
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
 
 

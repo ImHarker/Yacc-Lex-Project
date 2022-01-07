@@ -749,7 +749,7 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 9 "AL.l"
-printf("Comentario: %s\n", yytext);
+;//printf("Comentario: %s\n", yytext);
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

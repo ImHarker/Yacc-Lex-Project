@@ -6,7 +6,7 @@
 
 %%
 [ |\t|\n]+ 							;
-(\/-.*-\/)							printf("Comentario: %s\n", yytext);
+(\/-.*-\/)							;//printf("Comentario: %s\n", yytext);
 [1-9]+[0-9]*						{yylval.num = atoi(yytext); return Int; }
 [0-9]+[.][0-9]*						{yylval.fnum = atof(yytext); return Float; }
 [A-Za-z]+							{yylval.str = strdup(yytext); return String; }
