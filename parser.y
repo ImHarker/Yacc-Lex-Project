@@ -14,7 +14,7 @@ typedef struct medi{
 	int cod;
 	float preco;
 } medicamento;
-
+medicamento tmp;
 medicamento **array = NULL;
 %}
 
@@ -39,11 +39,11 @@ symposium: String DDot Int;
 classes: String 					{nClasses++; arrayAlloc();}
 	   | classes Comma String		{nClasses++; arrayAlloc();};
 
-list: medicamento {printf("%s\n",$$);}
-	| list medicamento {printf("%s\n", $2);};
+list: medicamento 
+	| list medicamento ;
 
 
-medicamento	: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon {newMed();};
+medicamento	: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon {strcpy(tmp.nome, $2); tmp.cod = $4; strcpy(tmp.cat, $6); strcpy(tmp.comp, $8); tmp.preco = $10; newMed(); };
 
 fabricantes: String
 		   | fabricantes Comma String;
@@ -69,6 +69,7 @@ int main (void) {
 	}else {
 		printf("%s\n", array[0][0].cat);
 		printf("%s\n", array[1][0].cat);
+		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\n", tmp.nome, tmp.cod, tmp.cat, tmp.comp, tmp.preco);  
 		for(i = 0; i< nClasses; i++){
 			free(array[i]);
 		}
@@ -95,16 +96,18 @@ void newMed(){
 	int i;
 	for(i=0; i<nClasses; i++){
 		if(nMedsClasse[i] != 0){
-			if(strcmp(array[i][0].cat, "NOTPlaceholder")== 0){
+			if(strcmp(array[i][0].cat, tmp.cat)== 0){
 				++nMedsClasse[i];
 				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
-				strcpy(array[i][nMedsClasse[i]-1].cat, "Placeholder");		
+				strcpy(array[i][nMedsClasse[i]-1].cat, tmp.cat);
+				//adicionar outros parametros
 				break;
 			}
 		}else { 
 			++nMedsClasse[i];
 			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
-			strcpy(array[i][0].cat, "Placeholder");
+			strcpy(array[i][0].cat, tmp.cat);
+			//adicionar outros parametros
 			break;
 		}
 	}

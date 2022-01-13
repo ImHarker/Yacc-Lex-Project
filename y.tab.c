@@ -83,7 +83,7 @@ typedef struct medi{
 	int cod;
 	float preco;
 } medicamento;
-
+medicamento tmp;
 medicamento **array = NULL;
 
 #line 90 "y.tab.c"
@@ -1374,26 +1374,14 @@ yyreduce:
 #line 1375 "y.tab.c"
     break;
 
-  case 6:
-#line 42 "parser.y"
-                  {printf("%s\n",(yyval.str));}
+  case 8:
+#line 46 "parser.y"
+                                                                                                                                                                 {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); newMed(); }
 #line 1381 "y.tab.c"
     break;
 
-  case 7:
-#line 43 "parser.y"
-                           {printf("%s\n", (yyvsp[0].str));}
-#line 1387 "y.tab.c"
-    break;
 
-  case 8:
-#line 46 "parser.y"
-                                                                                                                                                                 {newMed();}
-#line 1393 "y.tab.c"
-    break;
-
-
-#line 1397 "y.tab.c"
+#line 1385 "y.tab.c"
 
       default: break;
     }
@@ -1644,6 +1632,7 @@ int main (void) {
 	}else {
 		printf("%s\n", array[0][0].cat);
 		printf("%s\n", array[1][0].cat);
+		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\n", tmp.nome, tmp.cod, tmp.cat, tmp.comp, tmp.preco);  
 		for(i = 0; i< nClasses; i++){
 			free(array[i]);
 		}
@@ -1670,16 +1659,18 @@ void newMed(){
 	int i;
 	for(i=0; i<nClasses; i++){
 		if(nMedsClasse[i] != 0){
-			if(strcmp(array[i][0].cat, "NOTPlaceholder")== 0){
+			if(strcmp(array[i][0].cat, tmp.cat)== 0){
 				++nMedsClasse[i];
 				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
-				strcpy(array[i][nMedsClasse[i]-1].cat, "Placeholder");		
+				strcpy(array[i][nMedsClasse[i]-1].cat, tmp.cat);
+				//adicionar outros parametros
 				break;
 			}
 		}else { 
 			++nMedsClasse[i];
 			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
-			strcpy(array[i][0].cat, "Placeholder");
+			strcpy(array[i][0].cat, tmp.cat);
+			//adicionar outros parametros
 			break;
 		}
 	}
