@@ -67,10 +67,10 @@ Nonterminals, with rules where they appear
     medicamento <str> (23)
         on left: 7
         on right: 5 6
-    fabricantes (24)
+    fabricantes <str> (24)
         on left: 8 9
         on right: 7 9
-    marcasequi (25)
+    marcasequi <str> (25)
         on left: 10 11
         on right: 7 11
 

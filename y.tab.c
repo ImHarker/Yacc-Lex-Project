@@ -1376,12 +1376,30 @@ yyreduce:
 
   case 8:
 #line 46 "parser.y"
-                                                                                                                                                                 {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); newMed(); }
+                                                                                                                                                                 {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
 #line 1381 "y.tab.c"
     break;
 
+  case 10:
+#line 49 "parser.y"
+                                              {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
+#line 1387 "y.tab.c"
+    break;
 
-#line 1385 "y.tab.c"
+  case 11:
+#line 51 "parser.y"
+                                        {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
+#line 1393 "y.tab.c"
+    break;
+
+  case 12:
+#line 52 "parser.y"
+                                                          {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
+#line 1399 "y.tab.c"
+    break;
+
+
+#line 1403 "y.tab.c"
 
       default: break;
     }
@@ -1632,7 +1650,7 @@ int main (void) {
 	}else {
 		printf("%s\n", array[0][0].cat);
 		printf("%s\n", array[1][0].cat);
-		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\n", tmp.nome, tmp.cod, tmp.cat, tmp.comp, tmp.preco);  
+		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", tmp.nome, tmp.cod, tmp.cat, tmp.comp, tmp.preco, tmp.fabr, tmp.equ);  
 		for(i = 0; i< nClasses; i++){
 			free(array[i]);
 		}

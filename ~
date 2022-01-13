@@ -25,8 +25,8 @@ medicamento **array = NULL;
 %token <str> RBLeft RBRight BLeft BRight Semicolon Slash Hyphen CBLeft CBRight Comma Dot DDot String  
 %token <num> Int
 %token <fnum> Float
-%type <str> list medicamento fabricantes marcasequi
-%type symposium classes
+%type <str> list medicamento
+%type symposium classes fabricantes marcasequi
 
 %%
 

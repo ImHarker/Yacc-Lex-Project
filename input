@@ -4,5 +4,5 @@ Symposium: 2022
 /- Medicamento 1 -/
 (Moment,1,Analgesico,Paracetamol,4.5,{Roche},{Qualquer-Bial});
 /- Medicamento 2 -/
-(Antigripine,2,Antibiotico,Acetalilico,6.,{Fabt,Faba},{Aga-Fabc,Agb-Fabh});
+(Antigripine,2,Antibiotico,Acetalilico,6.,{Fabt,Faba,Fabb},{Aga-Fabc,Agb-Fabh});
 ] 
