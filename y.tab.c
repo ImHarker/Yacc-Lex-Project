@@ -1648,9 +1648,8 @@ int main (void) {
 		free(nMedsClasse);
 		return out;
 	}else {
-		printf("%s\n", array[0][0].cat);
-		printf("%s\n", array[1][0].cat);
-		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", tmp.nome, tmp.cod, tmp.cat, tmp.comp, tmp.preco, tmp.fabr, tmp.equ);  
+		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", array[0][0].nome, array[0][0].cod, array[0][0].cat, array[0][0].comp, array[0][0].preco, array[0][0].fabr, array[0][0].equ);  
+	printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", array[1][0].nome, array[1][0].cod, array[1][0].cat, array[1][0].comp, array[1][0].preco, array[1][0].fabr, array[1][0].equ);  
 		for(i = 0; i< nClasses; i++){
 			free(array[i]);
 		}
@@ -1681,14 +1680,25 @@ void newMed(){
 				++nMedsClasse[i];
 				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
 				strcpy(array[i][nMedsClasse[i]-1].cat, tmp.cat);
-				//adicionar outros parametros
+				strcpy(array[i][nMedsClasse[i]-1].nome, tmp.nome);
+				strcpy(array[i][nMedsClasse[i]-1].comp, tmp.comp);
+				strcpy(array[i][nMedsClasse[i]-1].fabr, tmp.fabr);
+				strcpy(array[i][nMedsClasse[i]-1].equ, tmp.equ);
+				array[i][nMedsClasse[i]-1].cod = tmp.cod;
+				array[i][nMedsClasse[i]-1].preco = tmp.preco;
+
 				break;
 			}
 		}else { 
 			++nMedsClasse[i];
 			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
-			strcpy(array[i][0].cat, tmp.cat);
-			//adicionar outros parametros
+				strcpy(array[i][0].cat, tmp.cat);
+				strcpy(array[i][0].nome, tmp.nome);
+				strcpy(array[i][0].comp, tmp.comp);
+				strcpy(array[i][0].fabr, tmp.fabr);
+				strcpy(array[i][0].equ, tmp.equ);
+				array[i][0].cod = tmp.cod;
+				array[i][0].preco = tmp.preco;
 			break;
 		}
 	}
