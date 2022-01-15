@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+extern int yylineno;
 void arrayAlloc();
 void yyerror (char *s);
 void newMed();
@@ -128,6 +129,6 @@ void cleanup(){ //Used to free the memory allocated
 	free(nMedsClasse);
 	
 }
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
+void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 
 
 

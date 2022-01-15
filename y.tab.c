@@ -71,6 +71,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+extern int yylineno;
 void arrayAlloc();
 void yyerror (char *s);
 void newMed();
@@ -88,7 +89,7 @@ typedef struct medi{
 medicamento tmp;
 medicamento **array = NULL;
 
-#line 92 "y.tab.c"
+#line 93 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -174,10 +175,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 24 "parser.y"
+#line 25 "parser.y"
 float fnum; int num; char *str;
 
-#line 181 "y.tab.c"
+#line 182 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -554,8 +555,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    37,    37,    39,    41,    42,    44,    45,    48,    50,
-      51,    53,    54
+       0,    36,    36,    38,    40,    41,    43,    44,    47,    49,
+      50,    52,    53
 };
 #endif
 
@@ -1365,43 +1366,43 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 41 "parser.y"
+#line 40 "parser.y"
                                                         {nClasses++; arrayAlloc();}
-#line 1371 "y.tab.c"
+#line 1372 "y.tab.c"
     break;
 
   case 5:
-#line 42 "parser.y"
+#line 41 "parser.y"
                                                 {nClasses++; arrayAlloc();}
-#line 1377 "y.tab.c"
+#line 1378 "y.tab.c"
     break;
 
   case 8:
-#line 48 "parser.y"
+#line 47 "parser.y"
                                                                                                                                                                  {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
-#line 1383 "y.tab.c"
+#line 1384 "y.tab.c"
     break;
 
   case 10:
-#line 51 "parser.y"
+#line 50 "parser.y"
                                               {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1389 "y.tab.c"
+#line 1390 "y.tab.c"
     break;
 
   case 11:
-#line 53 "parser.y"
+#line 52 "parser.y"
                                         {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1395 "y.tab.c"
+#line 1396 "y.tab.c"
     break;
 
   case 12:
-#line 54 "parser.y"
+#line 53 "parser.y"
                                                           {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
-#line 1401 "y.tab.c"
+#line 1402 "y.tab.c"
     break;
 
 
-#line 1405 "y.tab.c"
+#line 1406 "y.tab.c"
 
       default: break;
     }
@@ -1633,42 +1634,38 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 56 "parser.y"
-                     /* C code */
+#line 55 "parser.y"
 
 int main (void) {
-	/* init symbol table */
 	int out;
-	//extern int yydebug;
-   	//yydebug = 1;
-	if(out = yyparse( )){
+	//extern int yydebug; //debug
+   	//yydebug = 1;			//debug
+	if(out = yyparse( )){	//ERROR
 		cleanup();
 		return out;
-	}else {
+	}else {					//Success
 		printMeds();
 		cleanup();	
 		return out;
 	}
 }
 
-void arrayAlloc(){
+void arrayAlloc(){	//Used to allocate the base matrix of pointers to 'medicamento'
 		int i;
-		array = (medicamento**)realloc(array, nClasses * sizeof(medicamento*)); 
-		nMedsClasse = (int*)realloc(nMedsClasse, nClasses * sizeof(int));
-		for(i=0; i<nClasses;i++){
+		array = (medicamento**)realloc(array, nClasses * sizeof(medicamento*)); //allocate base matrix
+		nMedsClasse = (int*)realloc(nMedsClasse, nClasses * sizeof(int)); 		//allocate number of 'medicamentos'/type
+		for(i=0; i<nClasses;i++){	//initialize value 
 			nMedsClasse[i] = 0;
 		}
 
-		if(!array || !nMedsClasse){ printf("Não foi possivel alocar a memoria"); exit(1);}
+		if(!array || !nMedsClasse){ printf("Não foi possivel alocar a memoria"); exit(1);}	//Error: Allocation failed. return 1
 
-		printf("%d Classes alocadas!\n", nClasses);
-	
 }
-void newMed(){
+void newMed(){	//Used to create a new 'medicamento' in the matrix according to the type
 	int i;
 	for(i=0; i<nClasses; i++){
-		if(nMedsClasse[i] != 0){
-			if(strcmp(array[i][0].cat, tmp.cat)== 0){
+		if(nMedsClasse[i] != 0){	//Already is a 'medicamento' in this type
+			if(strcmp(array[i][0].cat, tmp.cat)== 0){ //Checks the type
 				++nMedsClasse[i];
 				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
 				strcpy(array[i][nMedsClasse[i]-1].cat, tmp.cat);
@@ -1678,10 +1675,9 @@ void newMed(){
 				strcpy(array[i][nMedsClasse[i]-1].equ, tmp.equ);
 				array[i][nMedsClasse[i]-1].cod = tmp.cod;
 				array[i][nMedsClasse[i]-1].preco = tmp.preco;
-
 				break;
 			}
-		}else { 
+		}else { //First 'medicamento' of this type
 			++nMedsClasse[i];
 			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
 				strcpy(array[i][0].cat, tmp.cat);
@@ -1695,7 +1691,7 @@ void newMed(){
 		}
 	}
 }
-void printMeds(){
+void printMeds(){	//Used to print all the 'medicamento's in the matrix
 	int i,j;
 	for( i = 0; i < nClasses; i++){
 		for( j=0; j < nMedsClasse[i]; j++){
@@ -1707,7 +1703,7 @@ void printMeds(){
 
 
 } 
-void cleanup(){
+void cleanup(){ //Used to free the memory allocated
 	int i;
 	for(i = 0; i< nClasses; i++){
 		free(array[i]);
@@ -1716,6 +1712,6 @@ void cleanup(){
 	free(nMedsClasse);
 	
 }
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
+void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 
 
 

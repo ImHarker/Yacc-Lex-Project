@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 %}
-
+%option yylineno
 %%
 [ |\t|\n]+ 							;
 (\/-.*-\/)							;//printf("Comentario: %s\n", yytext);
@@ -22,8 +22,7 @@
 ","									{yylval.str = strdup(yytext); return Comma;}
 "."									{yylval.str = strdup(yytext); return Dot;}
 ":"									{yylval.str = strdup(yytext); return DDot;}
-.									printf("Unexpected char %s\n",yytext);
-
+.									fprintf(stderr, "%d:Unexpected char: '%s'\n", yylineno, yytext);
 %%
 int yywrap(void)        
 {
