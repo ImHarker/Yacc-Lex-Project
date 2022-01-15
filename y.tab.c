@@ -74,6 +74,8 @@
 void arrayAlloc();
 void yyerror (char *s);
 void newMed();
+void printMeds();
+void cleanup();
 int yylex();
 char aux[100];
 int nClasses = 0;
@@ -86,7 +88,7 @@ typedef struct medi{
 medicamento tmp;
 medicamento **array = NULL;
 
-#line 90 "y.tab.c"
+#line 92 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -172,10 +174,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "parser.y"
+#line 24 "parser.y"
 float fnum; int num; char *str;
 
-#line 179 "y.tab.c"
+#line 181 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -552,8 +554,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    35,    35,    37,    39,    40,    42,    43,    46,    48,
-      49,    51,    52
+       0,    37,    37,    39,    41,    42,    44,    45,    48,    50,
+      51,    53,    54
 };
 #endif
 
@@ -1363,43 +1365,43 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 39 "parser.y"
+#line 41 "parser.y"
                                                         {nClasses++; arrayAlloc();}
-#line 1369 "y.tab.c"
+#line 1371 "y.tab.c"
     break;
 
   case 5:
-#line 40 "parser.y"
+#line 42 "parser.y"
                                                 {nClasses++; arrayAlloc();}
-#line 1375 "y.tab.c"
+#line 1377 "y.tab.c"
     break;
 
   case 8:
-#line 46 "parser.y"
+#line 48 "parser.y"
                                                                                                                                                                  {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
-#line 1381 "y.tab.c"
+#line 1383 "y.tab.c"
     break;
 
   case 10:
-#line 49 "parser.y"
+#line 51 "parser.y"
                                               {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1387 "y.tab.c"
+#line 1389 "y.tab.c"
     break;
 
   case 11:
-#line 51 "parser.y"
+#line 53 "parser.y"
                                         {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1393 "y.tab.c"
+#line 1395 "y.tab.c"
     break;
 
   case 12:
-#line 52 "parser.y"
+#line 54 "parser.y"
                                                           {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
-#line 1399 "y.tab.c"
+#line 1401 "y.tab.c"
     break;
 
 
-#line 1403 "y.tab.c"
+#line 1405 "y.tab.c"
 
       default: break;
     }
@@ -1631,30 +1633,20 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 54 "parser.y"
+#line 56 "parser.y"
                      /* C code */
 
 int main (void) {
 	/* init symbol table */
 	int out;
-	int i;
 	//extern int yydebug;
    	//yydebug = 1;
 	if(out = yyparse( )){
-		for(i = 0; i< nClasses; i++){
-			free(array[i]);
-		}
-		free(array);
-		free(nMedsClasse);
+		cleanup();
 		return out;
 	}else {
-		printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", array[0][0].nome, array[0][0].cod, array[0][0].cat, array[0][0].comp, array[0][0].preco, array[0][0].fabr, array[0][0].equ);  
-	printf("Nome: %s\tCod: %d\t\tCat: %s\tComp: %s\tPreco:%.2f\tFabr: %s\tEqui:%s\n", array[1][0].nome, array[1][0].cod, array[1][0].cat, array[1][0].comp, array[1][0].preco, array[1][0].fabr, array[1][0].equ);  
-		for(i = 0; i< nClasses; i++){
-			free(array[i]);
-		}
-		free(array);
-		free(nMedsClasse);
+		printMeds();
+		cleanup();	
 		return out;
 	}
 }
@@ -1670,7 +1662,7 @@ void arrayAlloc(){
 		if(!array || !nMedsClasse){ printf("Não foi possivel alocar a memoria"); exit(1);}
 
 		printf("%d Classes alocadas!\n", nClasses);
-
+	
 }
 void newMed(){
 	int i;
@@ -1702,6 +1694,27 @@ void newMed(){
 			break;
 		}
 	}
+}
+void printMeds(){
+	int i,j;
+	for( i = 0; i < nClasses; i++){
+		for( j=0; j < nMedsClasse[i]; j++){
+			printf("Nome: %s\nCod: %d\nCat: %s\nComp: %s\nPreco: %.2f\nFabr: %s\nEqui: %s\n-----------------------\n", array[i][j].nome, array[i][j].cod, array[i][j].cat, array[i][j].comp, array[i][j].preco, array[i][j].fabr, array[i][j].equ);  
+		} 
+	}
+
+
+
+
+} 
+void cleanup(){
+	int i;
+	for(i = 0; i< nClasses; i++){
+		free(array[i]);
+	}
+	free(array);
+	free(nMedsClasse);
+	
 }
 void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
 

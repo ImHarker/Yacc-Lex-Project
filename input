@@ -1,8 +1,12 @@
 Symposium: 2022
-[Analgesico,Antibiotico]
+[Analgesico,Antibiotico,Calmante]
 [
 /- Medicamento 1 -/
 (Moment,1,Analgesico,Paracetamol,4.5,{Roche},{Qualquer-Bial});
 /- Medicamento 2 -/
 (Antigripine,2,Antibiotico,Acetalilico,6.,{Fabt,Faba,Fabb},{Aga-Fabc,Agb-Fabh});
-] 
+/- Medicamento 3 -/
+(AlgumMed,3,Analgesico,Quimico,56.,{ASDHR},{Qualquer-qweqwe});
+/- Medicamento 4 -/
+(test,3,Calmante,Quimico,0.5,{hrgthr},{Qualquer-asdasdwe});
+ ]
