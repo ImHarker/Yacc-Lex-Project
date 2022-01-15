@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 extern int yylineno;
+void sort();
 void arrayAlloc();
 void yyerror (char *s);
 void newMed();
@@ -19,6 +20,8 @@ typedef struct medi{
 } medicamento;
 medicamento tmp;
 medicamento **array = NULL;
+
+
 %}
 
 
@@ -61,6 +64,7 @@ int main (void) {
 		cleanup();
 		return out;
 	}else {					//Success
+		sort();
 		printMeds();
 		cleanup();	
 		return out;
@@ -128,6 +132,21 @@ void cleanup(){ //Used to free the memory allocated
 	free(array);
 	free(nMedsClasse);
 	
+}
+void sort(){
+int i, j,k;
+	for(i =0; i< nClasses; i++){
+		for(j=0;j<nMedsClasse[i]; j++){
+			for(k=0;k<nMedsClasse[i]-j-1; k++){
+				if(strcmp(array[i][j].nome, array[i][j+1].nome) > 0){
+					tmp = array[i][j];
+					array[i][j] = array[i][j+1];
+					array[i][j+1] = tmp;
+				}
+			}
+		}
+	}
+
 }
 void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 
 

@@ -72,6 +72,7 @@
 #include <stdlib.h>
 #include <string.h>
 extern int yylineno;
+void sort();
 void arrayAlloc();
 void yyerror (char *s);
 void newMed();
@@ -89,7 +90,9 @@ typedef struct medi{
 medicamento tmp;
 medicamento **array = NULL;
 
-#line 93 "y.tab.c"
+
+
+#line 96 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -175,10 +178,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 25 "parser.y"
+#line 28 "parser.y"
 float fnum; int num; char *str;
 
-#line 182 "y.tab.c"
+#line 185 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -555,8 +558,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    36,    36,    38,    40,    41,    43,    44,    47,    49,
-      50,    52,    53
+       0,    39,    39,    41,    43,    44,    46,    47,    50,    52,
+      53,    55,    56
 };
 #endif
 
@@ -1366,43 +1369,43 @@ yyreduce:
   switch (yyn)
     {
   case 4:
-#line 40 "parser.y"
+#line 43 "parser.y"
                                                         {nClasses++; arrayAlloc();}
-#line 1372 "y.tab.c"
+#line 1375 "y.tab.c"
     break;
 
   case 5:
-#line 41 "parser.y"
+#line 44 "parser.y"
                                                 {nClasses++; arrayAlloc();}
-#line 1378 "y.tab.c"
+#line 1381 "y.tab.c"
     break;
 
   case 8:
-#line 47 "parser.y"
+#line 50 "parser.y"
                                                                                                                                                                  {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
-#line 1384 "y.tab.c"
+#line 1387 "y.tab.c"
     break;
 
   case 10:
-#line 50 "parser.y"
+#line 53 "parser.y"
                                               {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1390 "y.tab.c"
+#line 1393 "y.tab.c"
     break;
 
   case 11:
-#line 52 "parser.y"
+#line 55 "parser.y"
                                         {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1396 "y.tab.c"
+#line 1399 "y.tab.c"
     break;
 
   case 12:
-#line 53 "parser.y"
+#line 56 "parser.y"
                                                           {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
-#line 1402 "y.tab.c"
+#line 1405 "y.tab.c"
     break;
 
 
-#line 1406 "y.tab.c"
+#line 1409 "y.tab.c"
 
       default: break;
     }
@@ -1634,7 +1637,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 55 "parser.y"
+#line 58 "parser.y"
 
 int main (void) {
 	int out;
@@ -1644,6 +1647,7 @@ int main (void) {
 		cleanup();
 		return out;
 	}else {					//Success
+		sort();
 		printMeds();
 		cleanup();	
 		return out;
@@ -1711,6 +1715,21 @@ void cleanup(){ //Used to free the memory allocated
 	free(array);
 	free(nMedsClasse);
 	
+}
+void sort(){
+int i, j,k;
+	for(i =0; i< nClasses; i++){
+		for(j=0;j<nMedsClasse[i]; j++){
+			for(k=0;k<nMedsClasse[i]-j-1; k++){
+				if(strcmp(array[i][j].nome, array[i][j+1].nome) > 0){
+					tmp = array[i][j];
+					array[i][j] = array[i][j+1];
+					array[i][j+1] = tmp;
+				}
+			}
+		}
+	}
+
 }
 void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 
 
