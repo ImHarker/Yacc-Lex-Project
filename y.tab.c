@@ -78,8 +78,10 @@ void yyerror (char *s);
 void newMed();
 void printMeds();
 void cleanup();
+void HTMLgen();
 int yylex();
 char aux[100];
+int ano;
 int nClasses = 0;
 int *nMedsClasse = NULL; 
 typedef struct medi{
@@ -92,7 +94,7 @@ medicamento **array = NULL;
 
 
 
-#line 96 "y.tab.c"
+#line 98 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -178,10 +180,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "parser.y"
+#line 30 "parser.y"
 float fnum; int num; char *str;
 
-#line 185 "y.tab.c"
+#line 187 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -558,8 +560,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    39,    39,    41,    43,    44,    46,    47,    50,    52,
-      53,    55,    56
+       0,    41,    41,    43,    45,    46,    48,    49,    52,    54,
+      55,    57,    58
 };
 #endif
 
@@ -1368,44 +1370,50 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 4:
+  case 3:
 #line 43 "parser.y"
+                                    {ano = (yyvsp[0].num);}
+#line 1377 "y.tab.c"
+    break;
+
+  case 4:
+#line 45 "parser.y"
                                                         {nClasses++; arrayAlloc();}
-#line 1375 "y.tab.c"
+#line 1383 "y.tab.c"
     break;
 
   case 5:
-#line 44 "parser.y"
+#line 46 "parser.y"
                                                 {nClasses++; arrayAlloc();}
-#line 1381 "y.tab.c"
+#line 1389 "y.tab.c"
     break;
 
   case 8:
-#line 50 "parser.y"
+#line 52 "parser.y"
                                                                                                                                                                  {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
-#line 1387 "y.tab.c"
+#line 1395 "y.tab.c"
     break;
 
   case 10:
-#line 53 "parser.y"
-                                              {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1393 "y.tab.c"
+#line 55 "parser.y"
+                                              {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str)," "); strcat((yyval.str),(yyvsp[0].str));}
+#line 1401 "y.tab.c"
     break;
 
   case 11:
-#line 55 "parser.y"
+#line 57 "parser.y"
                                         {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1399 "y.tab.c"
+#line 1407 "y.tab.c"
     break;
 
   case 12:
-#line 56 "parser.y"
-                                                          {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
-#line 1405 "y.tab.c"
+#line 58 "parser.y"
+                                                          {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str), " "); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
+#line 1413 "y.tab.c"
     break;
 
 
-#line 1409 "y.tab.c"
+#line 1417 "y.tab.c"
 
       default: break;
     }
@@ -1637,7 +1645,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 58 "parser.y"
+#line 60 "parser.y"
 
 int main (void) {
 	int out;
@@ -1649,6 +1657,7 @@ int main (void) {
 	}else {					//Success
 		sort();
 		printMeds();
+		HTMLgen();
 		cleanup();	
 		return out;
 	}
@@ -1729,6 +1738,58 @@ int i, j,k;
 			}
 		}
 	}
+
+}
+void HTMLgen(){
+	FILE *fptr;
+	int i, j;
+  	char filepath[50] = "./www/";
+
+	system("mkdir ./www 2>/dev/null");
+	system("rm ./www/*.html 2>/dev/null");
+	
+	strcat(filepath, "index");
+	strcat(filepath, ".html");
+	fptr = fopen(filepath, "w");
+	if(!fptr){
+		fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
+		return;
+	}
+	fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Symposium %d</title>\n\t</head>\n", ano);
+	fprintf(fptr, "\t<body>\n\t\t<h1>Classes de Medicamentos Disponiveis</h1>\n\t\t<ul>");
+	for(i=0; i< nClasses; i++)
+		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";><a href=\"%s.html\">%s</a></li>", array[i][0].cat, array[i][0].cat);	
+	fprintf(fptr, "\n\t\t</ul>\n\t</body>\n</html>");
+	fclose(fptr);
+	
+	for(i = 0; i < nClasses; i++){
+		strcpy(filepath, "./www/");
+		strcat(filepath, array[i][0].cat);
+		strcat(filepath, ".html");
+		fptr = fopen(filepath, "w");
+		if(!fptr){
+			fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
+			return;
+		}
+		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>%s - Symposium %d</title>\n\t</head>\n",array[i][0].cat, ano);
+		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
+		fprintf(fptr, "\t\t<h1>%s</h1>\n", array[i][0].cat);
+		fprintf(fptr, "\t\t<dl style=\"margin-left: 50px\">\n");
+		for(j = 0; j < nMedsClasse[i]; j++){
+			fprintf(fptr, "\t\t\t<dt style=\"font-size:25px; margin-top: 30px\";>%s</dt>\n", array[i][j].nome);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Codigo: %d</dd>", array[i][j].cod);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Preco: %.2f</dd>", array[i][j].preco);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Composicao: %s</dd>", array[i][j].comp);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Fabricante: %s</dd>", array[i][j].fabr);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>", array[i][j].equ);
+		}
+		fprintf(fptr, "\t\t</dl>\n");
+		fprintf(fptr, "\t</body>\n</html>");
+		fclose(fptr);
+	}
+	
+	printf("Pagina HTML gerada. A abrir... './www/index.html'\n");
+	system("x-www-browser ./www/index.html");
 
 }
 void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 

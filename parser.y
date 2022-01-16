@@ -9,8 +9,10 @@ void yyerror (char *s);
 void newMed();
 void printMeds();
 void cleanup();
+void HTMLgen();
 int yylex();
 char aux[100];
+int ano;
 int nClasses = 0;
 int *nMedsClasse = NULL; 
 typedef struct medi{
@@ -38,22 +40,22 @@ medicamento **array = NULL;
 
 file: symposium RBLeft classes RBRight RBLeft list RBRight;
 
-symposium: String DDot Int;
+symposium: String DDot Int          {ano = $3;};
 
 classes: String 					{nClasses++; arrayAlloc();}
 	   | classes Comma String		{nClasses++; arrayAlloc();};
 
 list: medicamento 
-	| list medicamento ;
+	| list medicamento;
 
 
 medicamento	: BLeft String Comma Int Comma String Comma String Comma Float Comma CBLeft fabricantes CBRight Comma CBLeft marcasequi CBRight BRight Semicolon {strcpy(tmp.nome, $2); tmp.cod = $4; strcpy(tmp.cat, $6); strcpy(tmp.comp, $8); tmp.preco = $10; strcpy(tmp.fabr, $13); strcpy(tmp.equ, $17); newMed(); };
 
 fabricantes: String 
-		   | fabricantes Comma String {strcat($$, $2); strcat($$,$3);};
+		   | fabricantes Comma String {strcat($$, $2); strcat($$," "); strcat($$,$3);};
 
 marcasequi: String Hyphen String	{strcat($$,$2); strcat($$,$3);}
-		  | marcasequi Comma String Hyphen String {strcat($$,$2); strcat($$,$3); strcat($$,$4); strcat($$, $5);};
+		  | marcasequi Comma String Hyphen String {strcat($$,$2); strcat($$, " "); strcat($$,$3); strcat($$,$4); strcat($$, $5);};
 
 %%
 int main (void) {
@@ -66,6 +68,7 @@ int main (void) {
 	}else {					//Success
 		sort();
 		printMeds();
+		HTMLgen();
 		cleanup();	
 		return out;
 	}
@@ -146,6 +149,58 @@ int i, j,k;
 			}
 		}
 	}
+
+}
+void HTMLgen(){
+	FILE *fptr;
+	int i, j;
+  	char filepath[50] = "./www/";
+
+	system("mkdir ./www 2>/dev/null");
+	system("rm ./www/*.html 2>/dev/null");
+	
+	strcat(filepath, "index");
+	strcat(filepath, ".html");
+	fptr = fopen(filepath, "w");
+	if(!fptr){
+		fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
+		return;
+	}
+	fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Symposium %d</title>\n\t</head>\n", ano);
+	fprintf(fptr, "\t<body>\n\t\t<h1>Classes de Medicamentos Disponiveis</h1>\n\t\t<ul>");
+	for(i=0; i< nClasses; i++)
+		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";><a href=\"%s.html\">%s</a></li>", array[i][0].cat, array[i][0].cat);	
+	fprintf(fptr, "\n\t\t</ul>\n\t</body>\n</html>");
+	fclose(fptr);
+	
+	for(i = 0; i < nClasses; i++){
+		strcpy(filepath, "./www/");
+		strcat(filepath, array[i][0].cat);
+		strcat(filepath, ".html");
+		fptr = fopen(filepath, "w");
+		if(!fptr){
+			fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
+			return;
+		}
+		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>%s - Symposium %d</title>\n\t</head>\n",array[i][0].cat, ano);
+		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
+		fprintf(fptr, "\t\t<h1>%s</h1>\n", array[i][0].cat);
+		fprintf(fptr, "\t\t<dl style=\"margin-left: 50px\">\n");
+		for(j = 0; j < nMedsClasse[i]; j++){
+			fprintf(fptr, "\t\t\t<dt style=\"font-size:25px; margin-top: 30px\";>%s</dt>\n", array[i][j].nome);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Codigo: %d</dd>", array[i][j].cod);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Preco: %.2f</dd>", array[i][j].preco);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Composicao: %s</dd>", array[i][j].comp);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Fabricante: %s</dd>", array[i][j].fabr);
+			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>", array[i][j].equ);
+		}
+		fprintf(fptr, "\t\t</dl>\n");
+		fprintf(fptr, "\t</body>\n</html>");
+		fclose(fptr);
+	}
+	
+	printf("Pagina HTML gerada. A abrir... './www/index.html'\n");
+	system("x-www-browser ./www/index.html");
 
 }
 void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 
