@@ -1756,11 +1756,12 @@ void HTMLgen(){
 		return;
 	}
 	fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Symposium %d</title>\n\t</head>\n", ano);
-	fprintf(fptr, "\t<body>\n\t\t<h1>Classes de Medicamentos Disponiveis</h1>\n\t\t<ul>");
+	fprintf(fptr, "\t<body>\n\t\t<h1>Symposium %d</h1>\n\t\t<h2>Classes de Medicamentos Disponiveis</h2>\n\t\t<ul>", ano);
 	for(i=0; i< nClasses; i++)
 		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";><a href=\"%s.html\">%s</a></li>", array[i][0].cat, array[i][0].cat);	
-	fprintf(fptr, "\n\t\t</ul>\n\t</body>\n</html>");
-	fclose(fptr);
+		fprintf(fptr, "\n\t\t</ul>\n\t</body>\n");	
+		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px;  background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
+		fclose(fptr);
 	
 	for(i = 0; i < nClasses; i++){
 		strcpy(filepath, "./www/");
@@ -1784,10 +1785,30 @@ void HTMLgen(){
 			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>", array[i][j].equ);
 		}
 		fprintf(fptr, "\t\t</dl>\n");
-		fprintf(fptr, "\t</body>\n</html>");
+		fprintf(fptr, "\t</body>\n");
+		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px;  background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
 		fclose(fptr);
 	}
+
+		strcpy(filepath, "./www/");
+		strcat(filepath, "grupo.html");
+		fptr = fopen(filepath, "w");
+		if(!fptr){
+			fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
+			return;
+		}
+		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Grupo 8 - Symposium %d</title>\n\t</head>\n", ano);
+		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
+		fprintf(fptr, "\t\t<h1>Elementos do grupo 8</h1>\n");
+		fprintf(fptr, "\t\t<ul style=\"margin-left: 50px\">\n");
+		fprintf(fptr, "\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";>Gustavo Santos - 70800</li>");		
+		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";>Ricardo Silva - 70672</li>");
+		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";>Tiago Pedras - 70664</li>");	
+		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";>Vasco Teixeira - 74107</li>");
+		fprintf(fptr, "\n\t\t</ul>\n\t</body>\n");
+		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px; background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
 	
+
 	printf("Pagina HTML gerada. A abrir './www/index.html'...\n");
 	system("x-www-browser ./www/index.html");
 
