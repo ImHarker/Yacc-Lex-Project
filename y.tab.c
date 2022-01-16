@@ -84,17 +84,19 @@ char aux[100];
 int ano;
 int nClasses = 0;
 int *nMedsClasse = NULL; 
+
 typedef struct medi{
 	char nome[25], cat[25], comp[20], fabr[50], equ[50];
 	int cod;
 	float preco;
 } medicamento;
+
 medicamento tmp;
 medicamento **array = NULL;
 
 
 
-#line 98 "y.tab.c"
+#line 100 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -180,10 +182,10 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "parser.y"
+#line 32 "parser.y"
 float fnum; int num; char *str;
 
-#line 187 "y.tab.c"
+#line 189 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -560,8 +562,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    41,    41,    43,    45,    46,    48,    49,    52,    54,
-      55,    57,    58
+       0,    43,    43,    45,    47,    48,    50,    51,    54,    56,
+      57,    59,    60
 };
 #endif
 
@@ -1371,49 +1373,49 @@ yyreduce:
   switch (yyn)
     {
   case 3:
-#line 43 "parser.y"
+#line 45 "parser.y"
                                     {ano = (yyvsp[0].num);}
-#line 1377 "y.tab.c"
+#line 1379 "y.tab.c"
     break;
 
   case 4:
-#line 45 "parser.y"
+#line 47 "parser.y"
                                                         {nClasses++; arrayAlloc();}
-#line 1383 "y.tab.c"
+#line 1385 "y.tab.c"
     break;
 
   case 5:
-#line 46 "parser.y"
+#line 48 "parser.y"
                                                 {nClasses++; arrayAlloc();}
-#line 1389 "y.tab.c"
+#line 1391 "y.tab.c"
     break;
 
   case 8:
-#line 52 "parser.y"
+#line 54 "parser.y"
                                                                                                                                                                  {strcpy(tmp.nome, (yyvsp[-18].str)); tmp.cod = (yyvsp[-16].num); strcpy(tmp.cat, (yyvsp[-14].str)); strcpy(tmp.comp, (yyvsp[-12].str)); tmp.preco = (yyvsp[-10].fnum); strcpy(tmp.fabr, (yyvsp[-7].str)); strcpy(tmp.equ, (yyvsp[-3].str)); newMed(); }
-#line 1395 "y.tab.c"
+#line 1397 "y.tab.c"
     break;
 
   case 10:
-#line 55 "parser.y"
+#line 57 "parser.y"
                                               {strcat((yyval.str), (yyvsp[-1].str)); strcat((yyval.str)," "); strcat((yyval.str),(yyvsp[0].str));}
-#line 1401 "y.tab.c"
+#line 1403 "y.tab.c"
     break;
 
   case 11:
-#line 57 "parser.y"
+#line 59 "parser.y"
                                         {strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str),(yyvsp[0].str));}
-#line 1407 "y.tab.c"
+#line 1409 "y.tab.c"
     break;
 
   case 12:
-#line 58 "parser.y"
+#line 60 "parser.y"
                                                           {strcat((yyval.str),(yyvsp[-3].str)); strcat((yyval.str), " "); strcat((yyval.str),(yyvsp[-2].str)); strcat((yyval.str),(yyvsp[-1].str)); strcat((yyval.str), (yyvsp[0].str));}
-#line 1413 "y.tab.c"
+#line 1415 "y.tab.c"
     break;
 
 
-#line 1417 "y.tab.c"
+#line 1419 "y.tab.c"
 
       default: break;
     }
@@ -1645,20 +1647,20 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 60 "parser.y"
+#line 62 "parser.y"
 
 int main (void) {
 	int out;
 	//extern int yydebug; //debug
    	//yydebug = 1;			//debug
 	if(out = yyparse( )){	//ERROR
-		cleanup();
+		cleanup(); //frees memory 
 		return out;
 	}else {					//Success
-		sort();
-		printMeds();
-		HTMLgen();
-		cleanup();	
+		sort();				//sort the array
+		printMeds();		//print in the terminal
+		HTMLgen();			//Generate the HTML
+		cleanup();			//frees memory
 		return out;
 	}
 }
@@ -1680,7 +1682,8 @@ void newMed(){	//Used to create a new 'medicamento' in the matrix according to t
 		if(nMedsClasse[i] != 0){	//Already is a 'medicamento' in this type
 			if(strcmp(array[i][0].cat, tmp.cat)== 0){ //Checks the type
 				++nMedsClasse[i];
-				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
+				array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento)); //Add 1 more element to the array
+				//Copy properties from temp into the array
 				strcpy(array[i][nMedsClasse[i]-1].cat, tmp.cat);
 				strcpy(array[i][nMedsClasse[i]-1].nome, tmp.nome);
 				strcpy(array[i][nMedsClasse[i]-1].comp, tmp.comp);
@@ -1692,7 +1695,8 @@ void newMed(){	//Used to create a new 'medicamento' in the matrix according to t
 			}
 		}else { //First 'medicamento' of this type
 			++nMedsClasse[i];
-			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento));
+			array[i] = (medicamento*)realloc(array[i], nMedsClasse[i] * sizeof(medicamento)); //Add 1 more element to the array
+				//Copy properties from temp into the array
 				strcpy(array[i][0].cat, tmp.cat);
 				strcpy(array[i][0].nome, tmp.nome);
 				strcpy(array[i][0].comp, tmp.comp);
@@ -1704,7 +1708,7 @@ void newMed(){	//Used to create a new 'medicamento' in the matrix according to t
 		}
 	}
 }
-void printMeds(){	//Used to print all the 'medicamento's in the matrix
+void printMeds(){	//Used to print to the terminal all the 'medicamento's in the matrix
 	int i,j;
 	for( i = 0; i < nClasses; i++){
 		for( j=0; j < nMedsClasse[i]; j++){
@@ -1719,13 +1723,13 @@ void printMeds(){	//Used to print all the 'medicamento's in the matrix
 void cleanup(){ //Used to free the memory allocated
 	int i;
 	for(i = 0; i< nClasses; i++){
-		free(array[i]);
+		free(array[i]);	//free medicamento ptr
 	}
-	free(array);
-	free(nMedsClasse);
+	free(array);		//free matrix ptr
+	free(nMedsClasse);	//free array
 	
 }
-void sort(){
+void sort(){	//Sort arrays alphabetically by type 
 int i, j,k;
 	for(i =0; i< nClasses; i++){
 		for(j=0;j<nMedsClasse[i]; j++){
@@ -1740,21 +1744,22 @@ int i, j,k;
 	}
 
 }
-void HTMLgen(){
+void HTMLgen(){		//Generate HTML files to create the navigation system
 	FILE *fptr;
 	int i, j;
   	char filepath[50] = "./www/";
 
-	system("mkdir ./www 2>/dev/null");
-	system("rm ./www/*.html 2>/dev/null");
-	
-	strcat(filepath, "index");
-	strcat(filepath, ".html");
-	fptr = fopen(filepath, "w");
+	system("mkdir ./www 2>/dev/null");	//Tries to create ./www and redirects errors
+	system("rm ./www/*.html 2>/dev/null");	//Tries to delete old files in ./www and redirects errors
+	//Index.html
+	strcat(filepath, "index");	//Filename
+	strcat(filepath, ".html");	//Extension
+	fptr = fopen(filepath, "w");	//Opens in write mode
 	if(!fptr){
 		fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
 		return;
 	}
+	//Create HTML structure
 	fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Symposium %d</title>\n\t</head>\n", ano);
 	fprintf(fptr, "\t<body>\n\t\t<h1>Symposium %d</h1>\n\t\t<h2>Classes de Medicamentos Disponiveis</h2>\n\t\t<ul>", ano);
 	for(i=0; i< nClasses; i++)
@@ -1762,21 +1767,25 @@ void HTMLgen(){
 		fprintf(fptr, "\n\t\t</ul>\n\t</body>\n");	
 		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px;  background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
 		fclose(fptr);
-	
+
+
+	//MedType.html - Creates 1 page for each type of med
 	for(i = 0; i < nClasses; i++){
-		strcpy(filepath, "./www/");
-		strcat(filepath, array[i][0].cat);
-		strcat(filepath, ".html");
-		fptr = fopen(filepath, "w");
+		strcpy(filepath, "./www/");	//Folder
+		strcat(filepath, array[i][0].cat);	//Type of med - filename
+		strcat(filepath, ".html");	//Extension
+		fptr = fopen(filepath, "w");	//Open in write mode
 		if(!fptr){
 			fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
 			return;
 		}
+
+		//Create HTML structure	
 		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>%s - Symposium %d</title>\n\t</head>\n",array[i][0].cat, ano);
 		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
 		fprintf(fptr, "\t\t<h1>%s</h1>\n", array[i][0].cat);
 		fprintf(fptr, "\t\t<dl style=\"margin-left: 50px\">\n");
-		for(j = 0; j < nMedsClasse[i]; j++){
+		for(j = 0; j < nMedsClasse[i]; j++){ //Create a list element for each med in this type
 			fprintf(fptr, "\t\t\t<dt style=\"font-size:25px; margin-top: 30px\";>%s</dt>\n", array[i][j].nome);
 			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Codigo: %d</dd>", array[i][j].cod);
 			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Preco: %.2f</dd>", array[i][j].preco);
@@ -1790,13 +1799,17 @@ void HTMLgen(){
 		fclose(fptr);
 	}
 
-		strcpy(filepath, "./www/");
-		strcat(filepath, "grupo.html");
-		fptr = fopen(filepath, "w");
+
+		//grupo.html - information page about group elements
+		strcpy(filepath, "./www/");	//Folder
+		strcat(filepath, "grupo.html"); //Filename and extension
+		fptr = fopen(filepath, "w"); //Open in write mode
 		if(!fptr){
 			fprintf(stderr, "Impossivel abrir o ficheiro %s", filepath);
 			return;
 		}
+		
+		//Create HTML structure
 		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>Grupo 8 - Symposium %d</title>\n\t</head>\n", ano);
 		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
 		fprintf(fptr, "\t\t<h1>Elementos do grupo 8</h1>\n");
@@ -1807,10 +1820,10 @@ void HTMLgen(){
 		fprintf(fptr, "\n\t\t\t<li style=\"font-size:25px; margin-top: 10px; margin-left: 25px\";>Vasco Teixeira - 74107</li>");
 		fprintf(fptr, "\n\t\t</ul>\n\t</body>\n");
 		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px; background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
-	
+		fclose(fptr);
 
-	printf("Pagina HTML gerada. A abrir './www/index.html'...\n");
-	system("x-www-browser ./www/index.html");
+	printf("Sistema de navegacao em HTML gerado com sucesso.\nA abrir './www/index.html'...\n");
+	system("x-www-browser ./www/index.html");	//opens browser
 
 }
 void yyerror (char *s) {fprintf (stderr, "%d:%s\n", yylineno, s);} 

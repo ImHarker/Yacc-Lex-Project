@@ -87,7 +87,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "parser.y"
+#line 32 "parser.y"
 float fnum; int num; char *str;
 
 #line 94 "y.tab.h"
