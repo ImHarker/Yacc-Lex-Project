@@ -199,7 +199,7 @@ void HTMLgen(){
 		fclose(fptr);
 	}
 	
-	printf("Pagina HTML gerada. A abrir... './www/index.html'\n");
+	printf("Pagina HTML gerada. A abrir './www/index.html'...\n");
 	system("x-www-browser ./www/index.html");
 
 }
