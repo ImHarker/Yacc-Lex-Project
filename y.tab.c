@@ -1734,10 +1734,10 @@ int i, j,k;
 	for(i =0; i< nClasses; i++){
 		for(j=0;j<nMedsClasse[i]; j++){
 			for(k=0;k<nMedsClasse[i]-j-1; k++){
-				if(strcmp(array[i][j].nome, array[i][j+1].nome) > 0){
-					tmp = array[i][j];
-					array[i][j] = array[i][j+1];
-					array[i][j+1] = tmp;
+				if(strcmp(array[i][k].nome, array[i][k+1].nome) > 0){
+					tmp = array[i][k];
+					array[i][k] = array[i][k+1];
+					array[i][k+1] = tmp;
 				}
 			}
 		}
@@ -1794,7 +1794,7 @@ void HTMLgen(){		//Generate HTML files to create the navigation system
 			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>\n", array[i][j].equ);
 		}
 		fprintf(fptr, "\n\t\t</dl>\n");
-		fprintf(fptr, "\t</body>\n");
+		fprintf(fptr, "\t</body>\n\t<br>\n\t<br>\n\t<br>\n");
 		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px;  background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
 		fclose(fptr);
 	}
