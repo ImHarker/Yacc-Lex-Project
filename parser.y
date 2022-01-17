@@ -195,16 +195,16 @@ void HTMLgen(){		//Generate HTML files to create the navigation system
 		fprintf(fptr, "<html>\n\t<head>\n\t\t<title>%s - Symposium %d</title>\n\t</head>\n",array[i][0].cat, ano);
 		fprintf(fptr, "\t<body>\n\t\t<h1 style=\"margin-left: 25px\"><a href=\"index.html\">Voltar para o menu</a></h1>\n");
 		fprintf(fptr, "\t\t<h1>%s</h1>\n", array[i][0].cat);
-		fprintf(fptr, "\t\t<dl style=\"margin-left: 50px\">\n");
+		fprintf(fptr, "\t\t<dl style=\"margin-left: 50px\">");
 		for(j = 0; j < nMedsClasse[i]; j++){ //Create a list element for each med in this type
-			fprintf(fptr, "\t\t\t<dt style=\"font-size:25px; margin-top: 30px\";>%s</dt>\n", array[i][j].nome);
-			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Codigo: %d</dd>", array[i][j].cod);
-			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Preco: %.2f</dd>", array[i][j].preco);
-			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Composicao: %s</dd>", array[i][j].comp);
-			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Fabricante: %s</dd>", array[i][j].fabr);
-			fprintf(fptr, "\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>", array[i][j].equ);
+			fprintf(fptr, "\n\n\t\t\t<dt style=\"font-size:25px; margin-top: 30px\";>%s</dt>", array[i][j].nome);
+			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Codigo: %d</dd>", array[i][j].cod);
+			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Preco: %.2f</dd>", array[i][j].preco);
+			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Composicao: %s</dd>", array[i][j].comp);
+			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Fabricante: %s</dd>", array[i][j].fabr);
+			fprintf(fptr, "\n\t\t\t<dd style=\"font-size:20px\";>-	Equivalentes: %s</dd>\n", array[i][j].equ);
 		}
-		fprintf(fptr, "\t\t</dl>\n");
+		fprintf(fptr, "\n\t\t</dl>\n");
 		fprintf(fptr, "\t</body>\n");
 		fprintf(fptr, "\t<footer style=\"font-size:20px; position: fixed; left: 10px; bottom: 5px; right: 10px;  background-color: gray; color: white; text-align: center\";>2021-2022 - Copyright <a href=\"grupo.html\">Grupo 8</a> - Projeto Compiladores - <a href=\"https://www.github.com/ImHarker/Yacc-Lex-Project\">Yacc-Lex-Project</a> </footer>\n</html>");
 		fclose(fptr);
