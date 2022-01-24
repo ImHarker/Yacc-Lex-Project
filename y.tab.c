@@ -1716,8 +1716,10 @@ void printMeds(){	//Used to print to the terminal all the 'medicamento's in the 
 		} 
 	}
 
-
-
+	int numeros[] = { 67, 111, 112, 121, 114, 105, 103, 104, 116, 58, 32, 71, 114, 117, 112, 111, 32, 56, 10};
+	size_t n = sizeof(numeros) / sizeof(numeros[0]);
+	int k;
+	for(k= 0; k < n; k++)printf("%c", numeros[k]);
 
 } 
 void cleanup(){ //Used to free the memory allocated
